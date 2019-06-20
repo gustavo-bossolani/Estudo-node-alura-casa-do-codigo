@@ -1,0 +1,22 @@
+{
+  "name": "node-casa-do-codigo",
+  "version": "1.0.0",
+  "description": "Projeto para Estudo no Node",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GustavoBossolani/Estudo-node-alura-casa-do-codigo.git"
+  },
+  "author": "Gustavo Bossolani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GustavoBossolani/Estudo-node-alura-casa-do-codigo/issues"
+  },
+  "homepage": "https://github.com/GustavoBossolani/Estudo-node-alura-casa-do-codigo#readme",
+  "dependencies": {
+    "express": "4.16.3"
+  }
+}
