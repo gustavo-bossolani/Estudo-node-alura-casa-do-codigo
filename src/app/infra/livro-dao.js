@@ -23,15 +23,65 @@ class LivroDao {
             );
         });
     }
+    adciona(livro) {
+        return new Promise((resolve, reject) => {
+            this._db.run(
+                `INSERT INTO LIVROS (
+                titulo,
+                preco,
+                descricao) values(?,?,?)`,
+                [livro.titulo, livro.preco, livro.descricao],
+                (err) => {
+                    if (err) {
+                        console.log(err);
+                        return reject('Não foi possível inserir Este livro na base de Dados :(');
+                    }
+                    resolve();
+                });
+        });
+    }
 
-    insereLivro(titulo, preco, descricao) {
-        const sql =
-            `
-            INSERT INTO livros (titulo, preco, descricao)
-            SELECT '${ titulo}', ${preco}, '${descricao}'
-            WHERE NOT EXISTS (SELECT * FROM livros WHERE titulo = '${ descricao}')
-        `;
-        this._db.run(sql);
+    buscaPorId(id) {
+        return new Promise((resolve, reject) => {
+            this.db.get(
+                `
+                 SELECT * FROM livros WHERE id = ?
+                `, [id], (erro, livro) => {
+                    if (erro) return reject('Livro não Encontrado!');
+                    return resolve(livro);
+                }
+            );
+        });
+    }
+
+    atualiza(livro) {
+        return new Promise((resolve, reject) => {
+            this._db.run(
+                `
+                UPDATE livros SET
+                titulo = ?,
+                preco = ?,
+                descricao = ?
+                WHERE id = ?
+                `, [livro.titulo, livro.preco, livro.descricao, livro.id]
+                , erro => {
+                    if (erro) return reject('Não foi possível atualizar o Livro!');
+                    resolve();
+                })
+        });
+    }
+
+    remove(id) {
+        return new Promise((resolve, reject) => {
+            this._db.get(
+                `
+                DELETE FROM livros WHERE id = ?
+                `, [id], erro => {
+                    if (erro) return reject('Não foi possível deletar o Livro!');
+                    return resolve();
+                }
+            );
+        });
     }
 }
 module.exports = LivroDao;

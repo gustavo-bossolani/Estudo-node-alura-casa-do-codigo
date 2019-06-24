@@ -10,7 +10,8 @@ module.exports = (app) => {
                 desenvolvedor: [
                     {
                         id: 1,
-                        nome: 'Gustavo Bossolani'
+                        nome: 'Gustavo Bossolani',
+                        profissao: 'Desenvolvedor Web'
                     }
                 ]
             }
@@ -70,5 +71,22 @@ module.exports = (app) => {
         livroDao.insereLivro('Aprendendo Spring MVC', '49.99', 'Utilizando o queridinho do mundo Java!');
         resp.send('<h1>Livro Adcionado!</h1> <a href="/">voltar para a tela principal</a><br><a href="/livros">listar livros</a>');
         console.log('Livro adcionado com sucesso!');
+    });
+
+    app.get('/livros/adcionar-livro', (req, resp) => {
+        resp.marko(
+            require('../views/livros/form/form.marko'),
+        );
+    });
+
+    app.post('/livros', (req, resp) => {
+        console.log(req.body);
+        const livroDao = new LivroDao(db);
+        livroDao.adciona(req.body)
+            .then(
+                console.log('Livro inserido na base de dados'),
+                resp.redirect('/livros')
+                )
+            .catch(erro => console.log(erro));
     });
 }
