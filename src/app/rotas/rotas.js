@@ -65,18 +65,8 @@ module.exports = (app) => {
         // );
     });
 
-    app.get('/adcionar', (req, resp) => {
-
-        const livroDao = new LivroDao(db);
-        livroDao.insereLivro('Aprendendo Spring MVC', '49.99', 'Utilizando o queridinho do mundo Java!');
-        resp.send('<h1>Livro Adcionado!</h1> <a href="/">voltar para a tela principal</a><br><a href="/livros">listar livros</a>');
-        console.log('Livro adcionado com sucesso!');
-    });
-
     app.get('/livros/adcionar-livro', (req, resp) => {
-        resp.marko(
-            require('../views/livros/form/form.marko'),
-        );
+        resp.marko(require('../views/livros/form/form.marko'), { livro: {} });
     });
 
     app.post('/livros', (req, resp) => {
@@ -86,7 +76,44 @@ module.exports = (app) => {
             .then(
                 console.log('Livro inserido na base de dados'),
                 resp.redirect('/livros')
-                )
+            )
             .catch(erro => console.log(erro));
     });
+
+    app.put('/livros', (req, resp) => {
+        console.log(req.body);
+        const livroDao = new LivroDao(db);
+        
+        livroDao.atualiza(req.body)
+            .then(
+                console.log('Livro editado e inserido na base de dados'),
+                resp.redirect('/livros')
+            )
+            .catch(erro => console.log(erro));
+    });
+
+    app.delete('/livros/:id', (req, resp) => {
+        const id = req.params.id;
+
+        const livroDao = new LivroDao(db);
+        livroDao.remove(id)
+            .then(() => resp.status(200).end())
+            .catch(erro => console.log(erro));
+    });
+
+    app.get('/livros/editar-livro/:id', (req, resp) => {
+
+        const id = req.params.id;
+        const livroDao = new LivroDao(db);
+
+        livroDao.buscaPorId(id)
+            .then(livro =>
+                resp.marko(
+                    require('../views/livros/form/form.marko'),
+                    { livro: livro }
+                )
+            )
+            .catch(erro => console.log(erro));
+    });
+
 }

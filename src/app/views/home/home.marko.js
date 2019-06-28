@@ -31,11 +31,11 @@ function render(input, out, __component, component, state) {
       " </h1>");
   });
 
-  out.w("<a href=\"/livros\">listar livros disponiveis</a>");
+  out.w("<a href=\"/livros\">listar livros disponiveis</a><br><a href=\"/livros/adcionar-livro\"> adcionar novo livro</a>");
 
   init_components_tag({}, out);
 
-  await_reorderer_tag({}, out, __component, "8");
+  await_reorderer_tag({}, out, __component, "10");
 
   out.w("</body> </html>");
 }
